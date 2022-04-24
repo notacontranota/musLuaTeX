@@ -1,0 +1,76 @@
+\documentclass[a4paper]{article}
+\usepackage{musluatex}
+\usepackage{float}
+
+\begin{document}
+\renewcommand\figurename{Ejemplo}
+
+El \becuadrotxt\ es perfecto.
+
+El \becuadro\ es pluscuamperfecto.
+
+El acorde \cifAm{d}{m7} es ultrautilizado.
+
+\tachado{Te amo}, te odio, dame más.
+
+El \grado{6} grado siempre se arrodilla ante el \grado{5}, pero el \grado{1} siempre gana.
+
+La \negra\ se cree \blancab, pero es una \redonda\ y nada más.
+
+\noindent \musLuaTeX\ es mi paquete favorito.
+\begin{figure}[H]
+\begin{center}
+\begin{ly}
+\relative c'{
+  \tempo "Adagio" 4=50
+  \time 3/4
+  \key aes \major
+  \partial 4 es\pp (
+  aes2\< ) c4-.
+  bes ( aes g )
+  f2.\sf (
+  es\pp\fermata ) \bar "|."
+}
+\end{ly}
+\end{center}
+\caption{\emph{De tónica a dominante.}}
+\end{figure}
+
+La dińamica \dinamica{pp} es pianísimo, y la \dinamica{sf} significa \emph{sforzato}.
+
+El ritmo \ritmo{f2 f4 f f8-> f-. f-. f-.} es una muestra del uso del comando \texttt{\textbackslash ritmo\{\}}.
+
+Ella tocó en el piano \teclado{0,3,6,9} y él se enamoró.
+
+Gustavo Kantor camina en \compas{5}{4}, pero sus pasos son \dinamica{ppp}. Mientras tanto, silba \muses{\relative do'{\time 6/8 do8. do16 ( re8 ) mi4.->\fermata}}. Al silbar el \emph{mi} recordó la cuerda \cuerda{1}.
+
+El Padre Nuestro, antes, era más lindo:
+
+\gregoriano{(c3)<c>P</c>a(e)ter(f) nos(g)ter(g_',)}
+
+\greannotation{Hymn.}
+\greannotation[r]{VII}
+\gregoriano{
+Xa(a) b(b) c(c) d(d) e(e) f(f) g(g) h(h) i(i) j(j) k(k) l(l) m(m) (::),(,):(:)::(::);(;);1(;1)}
+
+\gresetinitiallines{0}
+\gresetclef{invisible}
+\begin{tabular}{ll}
+\textbf{Tipo} & \textbf{Notación}                                                             \\
+\hline
+Punctum       & \begin{minipage}[t]{6cm}
+                \gregoriano{a(a) b(b) c(c) d(d) e(e) f(f) g(g) h(h) i(i) j(j) k(k) l(l) m(m)}
+                \end{minipage}                                                                \\
+Virga         & \begin{minipage}[t]{6cm}
+                \gregoriano{ge(ge) if(if)}
+                \end{minipage}                                                                \\
+Pes           & \begin{minipage}[t]{6cm}
+                \gregoriano{eg(eg) fi(fi)}
+                \end{minipage}                                                                \\
+
+
+\hline
+\end{tabular}
+
+
+\end{document}

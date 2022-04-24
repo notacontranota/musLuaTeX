@@ -1,0 +1,636 @@
+\documentclass[a4paper,11pt]{scrartcl}
+\usepackage{musluatex}
+
+%\usepackage{polyglossia}
+%\setmainlanguage{spanish}
+
+\usepackage[margin=3cm,
+            %left=3cm,
+            %right=3cm,
+            %top=3cm,
+            %bottom=3cm,
+            ]{geometry}
+
+\usepackage{longtable}
+\usepackage{float}
+
+\newcommand{\bi}{\textbackslash}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%Título, subtítulo, autor
+\newcommand{\autor}{Pablo Herrera}
+\subject{Versión 0.0000000001}
+\title{Paquete \musLuaTeX}
+\subtitle{Musicología en castellano en \LuaLaTeX}
+\author{\autor}
+\date{\today}
+
+\usepackage[hidelinks,
+            colorlinks=true,
+            final,
+            unicode,
+            pdftitle={musLuaTeX: Musicología en LuaLaTeX},
+            pdfauthor={\autor},
+            ]{hyperref}
+
+\usepackage{microtype}
+\raggedbottom
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoftables
+\newpage
+\section{Presentación}
+
+Dos son las principales motivaciones que impulsaron el presente trabajo: la búsqueda de transparencia para el usuario, y la comodidad de comandos en nuestra lengua madre, el castellano. Si bien las opciones para abordar la temática de la escritura musical y musicológica en \LaTeX, como suele ser en el universo del \emph{software libre},
+son múltiples y variadas, nuestra experiencia nos ha hecho inclinarnos por la combinación de dos paquetes que si bien no dan cuenta de \emph{todo} lo que en el particular mundillo de los textos musicológicos acontece sí cubre la inmensa mayoría de las necesidades de escritura en este campo. Tales paquetes son \texttt{lilyglyphs} y \texttt{lyluatex}. El primero otorga acceso a los glifos de la tipografía \emph{Emmentaler}, fuente usada por el refinado programa de notación musical \texttt{lilypond}; el segundo paquete ---\texttt{lyluatex}--- pone a disposición del usuario de \LaTeX\ un método para incluir notación musical utilizando \texttt{lilypond} para generar las imágenes e incrustarlas en los documentos. El uso de este último paquete nos restringe a compilar exclusivamente con el motor \LuaTeX, pero es una restricción que bien vale la pena, ya que en \LuaLaTeX\ encontramos toda la patencia de \LaTeX\ modernizada por la capacidad de utilizar cualquier tipografía instalada en el sistema.
+
+\section{Requisitos}
+
+Indispensable para el correcto funcionamiento de \musLuaTeX\ es que \LaTeX\ esté instalado con los paquetes \texttt{harmony}, \texttt{lilyglyphs} y \texttt{lyluatex}. El primero otorga la pasibilidad de escribir acordes cifrados y ciertos símbolos musicales; el segundo accede por completo a la tipografía \emph{Emmentaler} y combina glifos de dicha fuente tipográfica; el tercer paquete necesario permite hacer un amplio uso de \texttt{lilypond} para tipografiar fragmentos musicales o partituras completas. Obvio es a esta altura que también es requisito indispensable tener instalado en el sistema GNU/LilyPond. Y por último, a los fines de sumarle a \texttt{lilypond} la capacidad de escribir cifrado funcional ---el creado por Hugo Riemann---, utilizaremos \texttt{harmonylily}, librería de Karsten Reincke.
+
+\section{Uso}
+
+Para usar \musLuaTeX\ alcanza con incluir en el preámbulo del documento:
+
+\medskip
+
+\noindent\texttt{\bi usepackage\{musluatex\}}
+
+\medskip
+
+\noindent y compilar con:
+
+\medskip
+
+\noindent\texttt{\$ lualatex --shell-escape [DOCUMENTO.TEX]}
+
+\medskip
+
+Un ejemplo mínimo, del estilo «Hola mundo», a continuación:
+
+\medskip
+
+\footnotesize
+\begin{verbatim}
+\documentclass{article}
+\usepackage{musluatex}
+
+\begin{document}
+\acorde.VII..\bemol7... Hola \muses{do' re' mi' r\fermata} mundo \compas{3}{4}.
+\end{document}
+\end{verbatim}
+\normalsize
+
+\noindent con el cual se obtiene:
+
+\begin{center}
+\begin{minipage}{7cm}
+\acorde.VII..\bemol7... Hola \muses{do' re' mi' r\fermata} mundo \compas{3}{4}.
+\end{minipage}
+\end{center}
+
+\section{Símbolos (comandos)}
+
+\subsection{Dinámicas}
+
+Las dinámicas se escriben con el comando \texttt{\bi dinamica\{<\emph{dinámica}>\}}, tal como indica el siguiente cuadro:
+
+\begin{table}[H]
+\centering
+\caption{Dinámicas.} \label{tab:dinamicas}
+\begin{tabular}{lll}
+\hline
+\textbf{Dinámica}   & \textbf{Comando}              & \textbf{Comando original (lilyglyphs)}  \\
+\hline
+\dinamica{ppp}      & \texttt{\bi dinamica\{ppp\}}  & \texttt{\bi lilyDynamics\{ppp\}}        \\
+\dinamica{pp}       & \texttt{\bi dinamica\{pp\}}   & \texttt{\bi lilyDynamics\{pp\}}         \\
+\dinamica{p}        & \texttt{\bi dinamica\{p\}}    & \texttt{\bi lilyDynamics\{p\}}          \\
+\dinamica{mp}       & \texttt{\bi dinamica\{mp\}}   & \texttt{\bi lilyDynamics\{mp\}}         \\
+\dinamica{mf}       & \texttt{\bi dinamica\{mf\}}   & \texttt{\bi lilyDynamics\{mf\}}         \\
+\dinamica{f}        & \texttt{\bi dinamica\{f\}}    & \texttt{\bi lilyDynamics\{f\}}          \\
+\dinamica{ff}       & \texttt{\bi dinamica\{ff\}}   & \texttt{\bi lilyDynamics\{ff\}}         \\
+\dinamica{fff}      & \texttt{\bi dinamica\{fff\}}  & \texttt{\bi lilyDynamics\{fff\}}        \\
+\dinamica{sf}       & \texttt{\bi dinamica\{sf\}}   & \texttt{\bi lilyDynamics\{sf\}}         \\
+\dinamica{sfz}      & \texttt{\bi dinamica\{sfz\}}  & \texttt{\bi lilyDynamics\{sfz\}}        \\
+\dinamica{fp}       & \texttt{\bi dinamica\{fp\}}   & \texttt{\bi lilyDynamics\{fp\}}         \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent Por lo general, cualquier combinación de letras relacionadas con las dinámicas estándar funcionan con este comando, como ser \texttt{\bi dinamica\{ffffp\}} para obtener \dinamica{ffffp}.
+
+
+\subsection{Duraciones}
+
+\subsubsection{Figuras}
+
+\begin{center}
+\begin{longtable}{lll}
+\caption{Las figuras y los comandos que las producen.} \label{tab:figuras} \\
+\hline
+\textbf{Figura} & \textbf{Comando}               & \textbf{Comando original (lilyglyphs)}         \\
+\hline
+\endhead
+\redonda        & \texttt{\bi redonda}           & \texttt{\bi wholeNote}                         \\
+\redondap       & \texttt{\bi redondap}          & \texttt{\bi wholeNoteDotted}                   \\
+\blanca         & \texttt{\bi blanca}            & \texttt{\bi halfNote}                          \\
+\blancab        & \texttt{\bi blancab}           & \texttt{\bi halfNoteDown}                      \\
+\blancap        & \texttt{\bi blancap}           & \texttt{\bi halfNoteDotted}                    \\
+\blancapb       & \texttt{\bi blancapb}          & \texttt{\bi halfNoteDottedDown}                \\
+\blancapp       & \texttt{\bi blancapp}          & \texttt{\bi halfNoteDottedDouble}              \\
+\blancappb      & \texttt{\bi blancappb}         & \texttt{\bi halfNoteDottedDoubleDown}          \\
+\negra          & \texttt{\bi negra}             & \texttt{\bi quarterNote}                       \\
+\negrab         & \texttt{\bi negrab}            & \texttt{\bi quarterNoteDown}                   \\
+\negrap         & \texttt{\bi negrap}            & \texttt{\bi quarterNoteDotted}                 \\
+\negrapb        & \texttt{\bi negrapb}           & \texttt{\bi quarterNoteDottedDown}             \\
+\negrapp        & \texttt{\bi negrapp}           & \texttt{\bi quarterNoteDottedDouble}           \\
+\negrappb       & \texttt{\bi negrappb}          & \texttt{\bi quarterNoteDottedDoubleDown}       \\
+\corchea        & \texttt{\bi corchea}           & \texttt{\bi eighthNote}                        \\
+\corcheab       & \texttt{\bi corcheab}          & \texttt{\bi eighthNoteDown}                    \\
+\corcheap       & \texttt{\bi corcheap}          & \texttt{\bi eighthNoteDotted}                  \\
+\corcheapb      & \texttt{\bi corcheapb}         & \texttt{\bi eighthNoteDottedDown}              \\
+\corcheapp      & \texttt{\bi corcheapp}         & \texttt{\bi eighthNoteDotted}                  \\
+\corcheappb     & \texttt{\bi corcheappb}        & \texttt{\bi eighthNoteDottedDown}              \\
+\semicorchea    & \texttt{\bi semicorchea}       & \texttt{\bi sixteenthNote}                     \\
+\semicorcheab   & \texttt{\bi semicorcheab}      & \texttt{\bi sixteenthNoteDown}                 \\
+\semicorcheap   & \texttt{\bi semicorcheap}      & \texttt{\bi sixteenthNoteDotted}               \\
+\semicorcheapb  & \texttt{\bi semicorcheapb}     & \texttt{\bi sixteenthNoteDottedDown}           \\
+\semicorcheapp  & \texttt{\bi semicorcheapp}     & \texttt{\bi sixteenthNoteDottedDouble}         \\
+\semicorcheappb & \texttt{\bi semicorcheappb}    & \texttt{\bi sixteenthNoteDottedDoubleDown}     \\
+\fusa           & \texttt{\bi fusa}              & \texttt{\bi thirtysecondNote}                  \\
+\fusab          & \texttt{\bi fusab}             & \texttt{\bi thirtysecondNoteDown}              \\
+\fusap          & \texttt{\bi fusap}             & \texttt{\bi thirtysecondNoteDotted}            \\
+\fusapb         & \texttt{\bi fusapb}            & \texttt{\bi thirtysecondNoteDottedDown}        \\
+\fusapp         & \texttt{\bi fusapp}            & \texttt{\bi thirtysecondNoteDottedDouble}      \\
+\fusappb        & \texttt{\bi fusappb}           & \texttt{\bi thirtysecondNoteDottedDoubleDown}  \\
+\hline
+\end{longtable}
+\end{center}
+
+\subsubsection{Silencios}
+
+
+Si se desea obtener un símbolo de silencio con doble o triple puntillo, basta con adicionar \texttt{\bi otroPuntillo} tantas veces como se quiera a los comandos del Cuadro~\ref{tab:silencios}. Por ejemplo, si escribimos \texttt{\bi silencioBlancap\bi otroPuntillo}, obtendremos \silencioBlancap\otroPuntillo\ y, de agregarse un '\texttt{otroPuntillo}' más se obtiene \silencioBlancap\otroPuntillo\otroPuntillo
+
+\begin{table}[H]
+\centering
+\caption{Símbolos de silencios.}
+\label{tab:silencios}
+\begin{tabular}{lll}
+\hline
+\textbf{Silencio}       & \textbf{Comando}                  & \textbf{Comando original (lilyglyphs)}    \\
+\hline
+\silencioRedonda        & \texttt{\bi silencioRedonda}      & \texttt{\bi wholeNoteRest}                \\
+\silencioRedondap       & \texttt{\bi silencioRedondap}     & \texttt{\bi wholeNoteRestDotted}          \\
+\silencioBlanca         & \texttt{\bi silencioBlanca}       & \texttt{\bi halfaNoteRest}                \\
+\silencioBlancap        & \texttt{\bi silencioBlancap}      & \texttt{\bi halfNoteRestDotted}           \\
+\silencioNegra          & \texttt{\bi silencioNegra}        & \texttt{\bi crotchetRest}                 \\
+\silencioNegrap         & \texttt{\bi silencioNegrap}       & \texttt{\bi crotchetRestDotted}           \\
+\silencioCorchea        & \texttt{\bi silencioCorchea}      & \texttt{\bi quaverRest}                   \\
+\silencioCorcheap       & \texttt{\bi silencioCorcheap}     & \texttt{\bi quaverRestDotted}             \\
+\silencioSemicorchea    & \texttt{\bi silencioSemicorchea}  & \texttt{\bi semiquaverRest}               \\
+\silencioSemicorcheap   & \texttt{\bi silencioSemicorcheap} & \texttt{\bi semiquaverRestDotted}         \\
+
+
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Ritmo} \label{subsubsec:ritmo}
+
+Con el comando \texttt{\bi ritmo\{\}} podemos escribir ritmos usando la sintaxis \texttt{lilypond}. Por ejemplo, si escribimos \texttt{\bi ritmo\{f4 f8 f f2\}} obtenemos esto: \ritmo{f4 f8 f f2}
+
+
+\subsection{Alteraciones}
+
+Para escribir bemoles, becuadros y sostenidos en línea existe una manera provista por las tipografías que usan el estándar UTF-8, el cual intenta dar solución a las necesidades de todos los idiomas del mundo a la vez de poner a disposición del usuario ciertos conjuntos de caracteres y símbolos usados en diferentes quehaceres humanos. Entre ellos, los tres símbolos básicos de alteraciones de notas. El bemol (\sostenidotxt), por ejemplo se obtiene escribiendo \texttt{\{\bi fontspec\{DejaVu Sans\}\bi symbol\{"266D\}\}}. Sin embargo, con \musLuaTeX\ se simplifica la sintaxis usando \texttt{\bi bemoltxt}. Sostenido (\sostenidotxt) y becuadro (\becuadrotxt) se obtienen con \texttt{\bi sostenidotxt} y \texttt{\bi becuadro} respectivamente.
+
+Sin embargo, la forma que recomendamos usar si se necesitan los doble bemoles, los dobles sostenidos, por ejemplo, y a los fines de mantener coherencia tipográfica, es la de los primeros cinco comandos del Cuadro~\ref{tab:alteraciones}, dejando los tres últimos solamente para los documentos en los que los dos símbolos menos usados estén ausentes.
+
+\begin{table}[H]
+\centering
+\caption{Símbolos de alteraciones más frecuentes.}
+\label{tab:alteraciones}
+\begin{tabular}{lll}
+\hline
+\textbf{Alteración} & \textbf{Comando}              & \textbf{Comando original (\texttt{lilyglyphs})}               \\
+\hline
+\doblesostenido     & \texttt{\bi doblesostenido}   & \texttt{\bi doublesharp}                                      \\
+\sostenido          & \texttt{\bi sostenido}        & \texttt{\bi sharp}                                            \\
+\becuadro           & \texttt{\bi becuadro}         & \texttt{\bi natural}                                          \\
+\bemol              & \texttt{\bi bemol}            & \texttt{\bi flat}                                             \\
+\doblebemol         & \texttt{\bi doblebemol}       & \texttt{\bi flatflat}                                         \\
+\hline
+\bemoltxt           & \texttt{\bi bemoltxt}         & \texttt{\{\bi fontspec\{DejaVu Sans\}\bi symbol\{"266D\}\}}   \\
+\becuadrotxt        & \texttt{\bi bcuadrotxt}       & \texttt{\{\bi fontspec\{DejaVu Sans\}\bi symbol\{"266E\}\}}   \\
+\sostenidotxt       & \texttt{\bi sostenidotxt}     & \texttt{\{\bi fontspec\{DejaVu Sans\}\bi symbol\{"266F\}\}}   \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Claves}
+
+\begin{table}[H]
+\centering
+\caption{Símbolos de claves en línea.}
+\label{tab:claves}
+\begin{tabular}{lll}
+\hline
+\textbf{Clave}  & \textbf{Comando}      & \textbf{Comando original (lilyglyphs)}    \\
+\hline
+\claveSol       & \texttt{\bi claveSol} & \texttt{\bi clefG}                        \\
+\claveDo        & \texttt{\bi claveDo}  & \texttt{\bi clefC}                        \\
+\claveFa        & \texttt{\bi claveFa}  & \texttt{\bi clefF}                        \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Compases}
+
+\begin{table}[H]
+\centering
+\caption{Escritura de compases.}
+\label{tab:compases}
+\begin{tabular}{lll}
+\hline
+\textbf{Compás}         & \textbf{Comando}                      & \textbf{Comando original (lilyglyphs)}            \\
+\hline
+\compas{7}{4}           & \texttt{\bi compas\{7\}\{4\}}         & \texttt{\bi lilyTimeSignature\{7\}\{4\}}          \\
+\compas{3 + 3 + 2}{8}   & \texttt{\bi compas\{3 + 3 + 2\}\{8\}} & \texttt{\bi lilyTimeSignature\{3 + 3 + 2\}\{8\}}  \\
+\compas{3 6}{4 8}       & \texttt{\bi compas\{3 6\}\{4 8\}}     & \texttt{\bi lilyTimeSignature\{3 6\}\{4 8\}}      \\
+\compasC                & \texttt{\bi compasC}                  & \texttt{\bi lilyTimeC}                            \\
+\compasCC               & \texttt{\bi compasCC}                 & \texttt{\bi lilyTimeCHalf}                        \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Cuerdas}
+
+Para hacer referencia a las cuerdas de una guitarra se acostumbra utilizar números arábigos encerrados en círculos. El comando para producir tales caracteres no pertenece ni a \texttt{lilyglyphs}, ni a \texttt{lyluatex}, sino que es un comando de nuestra factura. Su sintaxis es \texttt{\bi cuerda\{\emph{número}\}}. Por ejemplo, si escribimos \texttt{\bi cuerda\{5\}} obtendremos \cuerda{5}.
+
+\begin{table}[H]
+\centering
+\caption{Cuerdas de la guitarra.}
+\label{tab:cuerdas}
+\begin{tabular}{ll}
+\hline
+\textbf{Cuerda} & \textbf{Comando}          \\
+\hline
+\cuerda{1}      & \texttt{\bi cuerda\{1\}}  \\
+\cuerda{2}      & \texttt{\bi cuerda\{2\}}  \\
+\cuerda{3}      & \texttt{\bi cuerda\{3\}}  \\
+\cuerda{4}      & \texttt{\bi cuerda\{4\}}  \\
+\cuerda{5}      & \texttt{\bi cuerda\{5\}}  \\
+\cuerda{6}      & \texttt{\bi cuerda\{6\}}  \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Cifrados}
+
+\subsubsection{Cifrado americano} \label{subsubsec:cifAm}
+
+El cifrado americano, el cual consiste en la denominación de una fundamental comprendida entre las letra A y G y un sufijo que la califica, es producido por el comando \texttt{\bi cifAm\{\emph{fundamental}\}\{\emph{sufijo}\}}. Por ejemplo, si queremos obtener\cifAm{c}{maj7}, escribimos \texttt{\bi cifAm\{c\}\{maj7\}}. Los sostenidos y bemoles se consiguen agregando'is' y 'es' respectivamente a la fundamental (denominación propia de los Países Bajos); así, si escribimos '\texttt{cis}', obtendremos \cifAm{cis}{}, y si escribimos 'ces' el resultado será \cifAm{ces}{}.
+
+A continuación, una tabla donde presentamos los tipos de acordes más usados:
+
+\begin{center}
+\begin{longtable}{lll}
+\caption{Cifrado americano: tipos de acordes más usados.} \label{tab:cifAm} \\
+\hline
+\textbf{Cifrado}    & \textbf{Comando}                  & \textbf{Denominación}                         \\
+\hline
+\endhead
+\cifAm{d}{}         & \texttt{\bi cifAm\{d\}\{\}}       & Acorde de Re mayor.                           \\
+\cifAm{g}{m}        & \texttt{\bi cifAm\{g\}\{m\}}      & Acorde de Sol menor.                          \\
+\cifAm{f}{7}        & \texttt{\bi cifAm\{f\}\{7\}}      & Acorde de Fa séptima.                         \\
+\cifAm{dis}{m7}     & \texttt{\bi cifAm\{dis\}\{m7\}}   & Acorde de Re\sharp\ menor séptima.            \\
+\cifAm{bes}{aug}    & \texttt{\bi cifAm\{bes\}\{aug\}}  & Acorde de Si\flat\ aumentado.                 \\
+\cifAm{e}{5+}       & \texttt{\bi cifAm\{e\}\{5+\}}     & Acorde de Mi quinta aumentada.                \\
+\cifAm{cis}{5-}     & \texttt{\bi cifAm\{cis\}\{5-\}}   & Acorde de Do\sharp\ disminuido.               \\
+\cifAm{cis}{dim}    & \texttt{\bi cifAm\{cis\}\{dim\}}  & Acorde de Do\sharp\ disminuido séptima.       \\
+\cifAm{a}{sus4}     & \texttt{\bi cifAm\{a\}\{sus4\}}   & Acorde de La con cuarta suspendida.           \\
+\cifAm{c}{5-7}      & \texttt{\bi cifAm\{c\}\{5-7\}}    & Acorde de Do séptima sensible.                \\
+\cifAm{ees}{7/g}    & \texttt{\bi cifAm\{ees\}\{7/g\}}  & Acorde de Mi\flat\ séptima com bajo en Sol.   \\
+\hline
+\end{longtable}
+\end{center}
+
+
+\subsubsection{Cifrados de grados y de funciones}
+
+\LaTeX viene provisto de un paquete llamado \texttt{harmony}. Éste fue diseñado para dar soporte al cifrado de funciones armónicas ideado por Hugo Riemann, combinándose a la perfección con \texttt{MusiX\TeX}, paquete que le otorga a \LaTeX\ la capacidad de la escritura musical en forma nativa pero que su aprendizaje conlleva una dificultad muy alta y los resultados no son tan buenos como para que valga la pena el esfuerzo. Sin embargo, \texttt{harmony} sí es útil a la hora de escribir cifrado en línea (no como análisis de una partitura). Por tal motivo, también hacemos uso de ese paquete, rebautizando el original comando \texttt{\bi HH} por el castellanizado \texttt{\bi acorde}. Para cifrar una partitura usaremos la librería para \texttt{lilypond} llamada \texttt{harmonylily}, y desarrollaremos ese tema en la subsección~\ref{subsec:partic_escrit} en la página~\pageref{subsec:partic_escrit}.
+
+El manual de \texttt{harmony} presenta de forma completa las posibilidades que otorga el paquete; en \musLuaTeX\ hacemos un uso limitado a las situaciones más comunes, lo que no impide usar \texttt{harmony} del modo que su autor indica en la documentación del paquete. La sintaxis de \texttt{\bi acorde} es la siguiente:
+
+\begin{center}
+\texttt{\footnotesize\bi acorde.[GRADO O FUNCIÓN].[INVERSIÓN].[NOTA AÑADIDA 1].[NOTA AÑADIDA 2].[NOTA AÑADIDA 3].}
+\end{center}
+
+\noindent de modo tal que podemos escribir tanto cifrado romano como funcional. Ejemplos:
+
+\noindent El comando
+
+\begin{center}
+\texttt{\bi acorde.\bi tachado\{II\}.6.7.\bi becuadro 5.\bi sostenido 2.}
+\end{center}
+
+\noindent genera el resultado
+\begin{center}
+\acorde.\tachado{II}.6.7.\becuadro 5.\sostenido 2.
+\end{center}
+
+\noindent Como puede observarse, hemos incluido en \musLuaTeX\ el comando \texttt{\bi tachado\{\}}, que es equivalente a usar el original \LaTeX\ \texttt{\bi textst\{\}}, para dar soporte a la manera de Schoenberg de cifrar grados alterados; también es observable que los comandos \texttt{\bi sostenido} y \texttt{\bi becuadro} funcionan a la perfección, y como el lector sospechará a esta altura, el comando \texttt{\bi bemol} también se puede usar dentro de \texttt{\bi acorde}.
+
+El mismo acorde, expresado al modo de Riemann se escribe del siguiente modo:
+
+\begin{center}
+\texttt{\bi acorde.\bi DD.3.\bi sostenido11.9.\bi becuadro7.}
+\end{center}
+
+\noindent obteniéndose el siguiente resultado:
+
+\begin{center}
+\acorde.\DD.3.\sostenido11.9.\becuadro7.
+\end{center}
+
+Finalmente, y a modo de anticipo, presentamos el uso de \texttt{harmonylily}, en contexto de análisis de partituras:
+
+\begin{center}
+\lily{%[insert=bare-inline]{
+    \include "harmonyli.ly"
+    \score {
+        <<
+            \new Staff {<fis' gis' c''! d'' e'' a''>2}
+            \addlyrics{ \markup \setHas "D" #'(
+                ("T"."d")
+                ("B"."3")
+                ("S"."5")
+                ("a"."♮7")
+                ("b"."9")
+                ("c"."♯11")
+            ) }
+        >>
+        \layout{
+          \context{
+            \Staff
+            \remove "Time_signature_engraver"
+          }
+        }
+    }
+}
+\end{center}
+
+\noindent Hay, además de la indicación de bajo (3 por debajo de la función), una indicación de soprano (5 por encima de la función). Esta particularidad propia de \texttt{harmonylily} no está disponible en \texttt{harmony}.
+
+
+\section{Diagramas}
+
+\subsection{Diagramas de guitarra}
+
+Los diagramas de acordes para la guitarra se obtienen con el uso del comando \texttt{\bi diaGtr\{\}\{\}}. Idéntico uso al comando \texttt{\bi cifAm\{\}\{\}}, presentado en el apartado~\ref{subsubsec:cifAm} en la página~\pageref{subsubsec:cifAm}, \texttt{\bi diaGtr} necesita dos argumentos: fundamental del acorde y sufijo. En el sufijo puede incluirse la inversión del acorde. Por ejemplo, \texttt{\bi diaGtr\{g\}\{m7\}} da como resultado \diaGtr{g}{m7}, y \texttt{\bi diaGtr\{g\}\{m7/b\}}, \diaGtr{g}{m7/b}.
+
+\subsection{Diagramas de teclado}
+
+Con el comando \texttt{\bi teclado} se produce un teclado de dos octavas. Por ejemplo, si escribimos \texttt{\bi teclado\{0,4,7,10\}} obtendremos \teclado{0,4,7,10}; la opción \texttt{single} reduce el diagrama a una octava, y la opción \texttt{ext} adiciona a esa octava una tecla más. Así, \texttt{\bi teclado[single,ext]\{0,4,7,10\}} produce \teclado[single,ext]{0,4,7,10}.
+
+\subsection{Diagramas seriales}
+
+El paquete \texttt{ddphonism} provee varias herramientas para generar diagramas relacionados con la producción de música serial. Quizás el más usado de los comandos de este paquete sea \texttt{\bi ddiagram}. Su uso básico es simple: por ejemplo, si escribimos \texttt{\bi ddiagram\{0,7,2,9,4,11,6,1,8,3,10,5\}} se obtiene:
+
+\ddiagram{0,7,2,9,4,11,6,1,8,3,10,5}
+
+Para más información, consultar la documentación del \href{https://ctan.dcc.uchile.cl/macros/latex/contrib/ddphonism/ddphonism.pdf}{paquete \texttt{ddphonism}}.
+
+\section{Partituras y fragmentos}
+
+En esta sección nos centramos en la producción de fragmentos musicales y partituras completas. Los fragmentos musicales pueden ir tanto en línea (como parte del texto) como así también enmarcados en un entorno de figura. Es en estos tipos de situaciones en las que se hace uso del paquete \texttt{liluatex}. Éste nos da pleno acceso a las bondades del \emph{software} de notación musical LilyPond. Por ser LilyPond el verdadero responsable de la escritura de los fragmentos musicales y partituras, inesquivable se hace el estudio del manejo de este programa.
+
+El comando \texttt{\bi ritmo\{\}}, presentado brevemente en el apartado~\ref{subsubsec:ritmo}, página~\pageref{subsubsec:ritmo}, es ya un ejemplo de un uso solapado del comando \texttt{\bi lily\{\}} de \texttt{liluatex}, restringido a la escritura de signos rítmicos en la línea del texto. Sin embargo, el comando \texttt{\bi lily\{\}} tiene una potencialidad que supera en mucho a la escritura de ritmos en línea, y que a continuación iremos descubriendo.
+
+\subsection{Música antigua}
+
+LilyPond es quizás el programa de notación musical que más soporte da a la escritura de la música antigua: notación mensural, neogregoriano, bajo continuo, etc. Para mayor información, dirigirse al \href{http://lilypond.org/doc/v2.23/Documentation/notation/ancient-notation.es.html}{manual de referencia de la notación} de LilyPond.
+
+\subsubsection{Canto gregoriano}
+
+A pesar de que LilyPond ofrece una solución para la escritura de la música gregoriana, ésta es claramente superada por la \emph{performance} del proyecto Gegorio, por lo que recomendamos al usuario hacer uso de éste último a la hora de producir partituras de canto llano.
+
+El paquete \musLuaTeX\ llama, entre otros, al paquete \texttt{gregoriotex}, estilo especializado en la escritura de música gregoriana en \LuaLaTeX. Así, pues, al llamar a \musLuaTeX, el usuario tiene a su disposición \emph{todo} lo ofrecido por tal paquete. Para satisfacer uno de los objetivos del presente trabajo, hemos incluido, como traducción del comando \texttt{\bi gabcsnippet} al comando \texttt{\bi gregoriano}. Un ejemplo:
+
+\begin{verbatim}
+\gregoriano{
+  (c3)<c>P</c>a(e)ter(f) nos(g)ter,(g',)
+  qui(f) es(h) in(g) cæ(f)lis:(e.;)
+  sanc(f)ti(e)fi(f)cé(g)tur(fe) no(ef)men(g) tu(fg)um;(f.:)
+}
+\end{verbatim}
+
+\noindent genera los primeros versos del \emph{Pater Noster}:
+{\fontspec{Middle Ages Deco PERSONAL USE}
+\gregoriano{
+  (c3)<c>P</c>a(e)ter(f) nos(g)ter,(g_',)
+  qui(f) es(h) in(g) cæ(f)lis:(e.;)
+  sanc(f)ti(e)fi(f)cé(g)tur(fe) no(ef)men(g) tu(fg)um;(f.:)
+}
+}
+\medskip
+
+\grechangestaffsize{10}
+\gresetlinecolor{gregoriocolor}
+\gresetinitiallines{0}
+\gresetclef{invisible}
+\gresetlyriccentering{firstletter}
+\begin{table}[H]
+\caption{Notación en código \textbf{gabc} (Gregorio).}
+\label{tab:gregorio}
+\begin{center}
+\begin{tabular}{ll}
+\hline
+\textbf{Tipo} & \textbf{Notación gabc (Gregorio)} \\
+\hline
+              &                                   \\
+Claves        & \begin{minipage}[t]{4cm}
+                \gregoriano{( ) c2(c2) c3(c3) c4(c4) cb3(cb3) f2(f2) fb3(fb3)}
+                \end{minipage}                    \\
+Punctum       & \begin{minipage}[t]{4cm}
+                \gregoriano{a(a) b(b) c(c) d(d) e(e) f(f) g(g) h(h) i(i) j(j) k(k) l(l) m(m)}
+                \end{minipage}                    \\
+Virga         & \begin{minipage}[t]{4cm}
+                \gregoriano{ge(ge) if(if)}
+                \end{minipage}                    \\
+Pes           & \begin{minipage}[t]{4cm}
+                \gregoriano{eg(eg) fi(fi)}
+                \end{minipage}                    \\
+Barras        & \begin{minipage}[t]{4cm}
+                \gregoriano{,(,) `(`) :(:) ::(::) ;(;) ;1(;1) ;2(;2) ;3(;3) ;4(;4) ;5(;5) ;6(;6)}
+                \end{minipage}                    \\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+\noindent Para más información, referirso a la \href{https://gregorio-project.github.io/index.html}{página web} del proyecto \texttt{Gregorio} y al \href{https://ctan.dcc.uchile.cl/support/gregoriotex/doc/GregorioRef.pdf}{manual del paquete}. Para los interesados en la escritura de canto gregoriano, sin dudas esta es la opción más acabada a la fecha para tal fin. Quizás, a primera vista, el código generador de la escritura gregoriana nos parezca un tanto hermético, esotérico, pero al ver la referencia de la notación de la página oficial de Gregorio, los posibles miedos se disipan rápidamente.
+
+\subsubsection{Bajo continuo en línea}
+
+Con el comando \texttt{\bi bajoContinuo\{\}} se puede escribir bajo cifrado en línea con el texto. Entre llaves se utiliza la sintaxis propia de \texttt{\bi figuremode} implementada en LilyPond. Por ejemplo, obtenemos \bajoContinuo{<6+> <6 5/>} si escribimos \texttt{\bi bajoContinuo\{<6+> <6 5/>\}}. Para la inclusión de bajo continuo en fragmentos musicales y en partituras completas, el método es el indicado en los manuales de LilyPond, es decir un entorno \texttt{'FiguredBass'} y en él incluir, dentro de un \texttt{figuremode\{\}} el bajo propiamente dicho.
+
+\subsection{Fragmentos musicales en línea}
+
+Como acabamos de mencionar, los fragmentos musicales escritos en la línea del texto son producidos por el comando \texttt{\bi lily\{\}} del paquete \texttt{lyluatex}. Éste fue traducido a dos comandos en \musLuaTeX, a saber: \texttt{\bi mus\{\}} y \texttt{\bi muses\{\}}; este último varía respecto al primero en que las notas se deben expresar con sus nombres en castellano (do, re, mi, etc.), mientras que en \texttt{\bi mus\{\}} ellas se escriben siguiendo la opción por omisión de \texttt{lilypond}, que es el lenguaje holandés, donde la convención es parecida a la alemana o norteamericana (c, d, e, etc.).Si escribimos
+
+\begin{center}
+\footnotesize
+\texttt{\bi muses\{ \bi relative do' \{ do ( re ) mib fas\}\}}
+\end{center}
+
+\noindent obtendremos \muses{ \relative do' { do ( re ) mib fas }}, mientras que si escribimos
+
+\begin{center}
+\footnotesize
+\texttt{\bi mus\{ \bi relative c' \{ c ( d ) ees fis \}\}}
+\end{center}
+
+\noindent el resultado es exactamente es mismo: \mus{ \relative c' { c ( d ) ees fis }}. La ventaja de usar \texttt{\bi muses} en vez de \texttt{\bi mus} es la de los nombres de las notas en castellano, y la desventaja es la de tipear más por ser estos nombres más largos que los holandeses; en fragmentos cortos parece algo irrelevante, pero en proyectos grandes tipear más, o menos sí es significativo.
+
+Al igual que en \texttt{\bi lily\{\}}, tanto en \texttt{\bi mus\{\}} como en \texttt{\bi muses\{\}} se pueden pasar opciones entre corchetes antes que la música escrita entre llaves, siguiendo la sintaxis
+
+\begin{center}
+\footnotesize
+\texttt{\bi muses[<\emph{opción 1}>, <\emph{opción 2}>,\ldots]\{<\emph{música}>\}}
+\end{center}
+
+Una de las opciones más útiles es \texttt{'staffsize'}, sirviendo ésta para definir el tamaño de la música. El valor por omisión es de 16, por lo que valores menores a esto producirán fragmentos visualmente más pequeños que los escritos más arriba, y números mayores a 16 generarán fragmentos más grandes. Ejemplos:
+
+\noindent {\footnotesize \texttt{\bi muses[staffsize=12]\{ \bi time 3/4 do'2. \bi bar "|." \}}} \muses[staffsize=12]{ \time 3/4 do'2. \bar "|." }
+
+\noindent {\footnotesize \texttt{\bi muses[staffsize=22]\{ do''1 \bi bar "|." \}}} \muses[staffsize=22]{ do''1 \bar "|." }
+
+
+\subsection{\LaTeX\ como editor de partituras}
+
+Existen dos vías no excluyentes de incorporar partituras en un documento \LaTeX:
+
+\begin{itemize}
+\item Usando un entrorno \texttt{\bi begin\{ly\} \bi end\{ly\}} y escribiendo en él código lilypond.
+\item Insertando un archivo lilypond externo (.ly) a través del comando \texttt{lilypondfile\{\}} o su traducción en \musLuaTeX\ que es \texttt{\bi archivoly\{\}}.
+\end{itemize}
+
+Ejemplo de escritura en el entorno \texttt{ly}:
+
+\begin{verbatim}
+\begin{ly}
+\relative d' {
+  \tempo "Presto"
+  d\p\< a' e cis\f \bar "||"
+}
+\end{ly}
+\end{verbatim}
+
+\noindent produce:
+
+\medskip
+
+\begin{ly}
+\relative d' {
+  \tempo "Presto"
+  d\p\< a' e cis\f \bar "||"
+}
+\end{ly}
+
+Si ese mismo código lilypond lo tenemos guardado en un archivo llamado \texttt{'ejemplo.ly'}, basta con ecribir:
+
+\medskip
+
+\noindent \texttt{\bi archivoly\{ejemplo\}}
+
+\medskip
+
+\noindent para obtener:
+
+\medskip
+
+\archivoly{ejemplo}
+
+\medskip
+
+La facilidad que tiene \LaTeX\ para producir índices, manipular diseños de páginas y establecer referencias cruzadas no lo tiene ni LilyPond ni ningún otro editor de partituras en la actualidad. Tanto LilyPond como Dorico permiten la realización de índices, pero de manera limitada. En cambio en \LaTeX, además de la generación automática de un índice a través de \texttt{\bi tableofcontents}, podemos hacer un índice musical con pequeños fragmentos musicales de las piezas que compongan, por ejemplo, un libro de composiciones, al modo de las antiguas ediciones Ricordi de las sonatas de Beethoven o del \emph{El clave bien temperado} de Bach.
+
+
+\subsection{Particularidades de la escritura musical} \label{subsec:partic_escrit}
+
+\subsubsection{Música y letra}
+\label{subsubsec:musicayletra}
+
+Quizás sea LilyPond el editor de partituras que mejor distribuye espacialmente el texto en música vocal. Sin embargo, el método que utiliza en su sintaxis para informarlo es muy poco intuitiva: al anotarse la música en una sección y la letra en otra, el usuario no ve la relación entre nota y sílaba. Por este motivo hemos resuelto incluir esta subsección explicativa de la manera de escribir música vocal, sin pretender ni por cerca agotar el tema, tema que sí está dicho en profundidad en el \href{http://lilypond.org/doc/v2.22/Documentation/notation/vocal-music.es.html}{manual de LilyPond}.
+
+Mostraremos, pues, un pequeño ejemplo que dejará notar en qué partes del código van música y letra. Miestras la música va en un contexto \emph{Voice}, la letra lo hace en un contexto \emph{Lyrics}. A los fines prácticos a la hora de realizar breves ejemplos vocales, recomendamos ---hay más de uno--- el siguiente método:
+
+\medskip
+
+\noindent \texttt{\bi muses\{<\{música\}> \bi addlyrics\{<letra>\}\}}
+
+\medskip
+
+\noindent Ejemplo:
+
+\begin{verbatim}
+\muses{
+        \relative{ \time 3/4 re''4. la8 mi'4 dos ( re2 ) \bar "|." }
+        \addlyrics{ ¡Ho -- la, mi~a -- mor! __ }
+}
+\end{verbatim}
+
+\medskip
+
+\noindent produce \muses{ \relative{ \time 3/4
+    re''4. la8 mi'4 dos ( re2 ) \bar "|." } \addlyrics{ ¡Ho -- la, mi~a -- mor! __ }}.
+
+
+\subsubsection{Cifrado de acordes}
+
+\subsubsection{Bajo continuo}
+
+\subsubsection{Análisis schenkeriano}
+
+Sabido es que en la notación analítica de Heinrich Schenker los grados melódicos se anotan con números arábigos con acentos circunflejos. Con \musLuaTeX\ es posible usar el comando\texttt{\bi grado\{\}} para obtene un caracter de este tipo. Así, por ejemplo, escribiendo \texttt{\bi grado\{5\}} obtenemos \grado{5}.
+
+\begin{table}[H]
+\centering
+\caption{Grados melódicos en notación schenkeriana.}
+\label{tab:grados_sch}
+\begin{tabular}{ll}
+\hline
+\textbf{Grado melódico} & \textbf{Comando}        \\
+\hline
+\grado{1}               & \texttt{\bi grado\{1\}} \\
+\grado{2}               & \texttt{\bi grado\{2\}} \\
+\grado{3}               & \texttt{\bi grado\{3\}} \\
+\grado{4}               & \texttt{\bi grado\{4\}} \\
+\grado{5}               & \texttt{\bi grado\{5\}} \\
+\grado{6}               & \texttt{\bi grado\{6\}} \\
+\grado{7}               & \texttt{\bi grado\{7\}} \\
+\grado{8}               & \texttt{\bi grado\{8\}} \\
+\hline
+\end{tabular}
+\end{table}
+
+A continuación ofrecemos un ejemplo de notación schenkeriana:
+
+\archivoly{schenker}
+
+El método para escribir con LilyPond gráficos con la notación analítica schenkeriana está descripto en el artículo \href{https://www.linuxjournal.com/article/8364}{Make Stunning Schenker Graphs with GNU Lilypond}.
+
+
+
+\end{document}
