@@ -6,3 +6,6 @@ Dos son las principales motivaciones que impulsaron el presente trabajo: la bús
 
 ## Requisitos
 Indispensable para el correcto funcionamiento de musLuaTeX es que LaTeX esté instalado con los paquetes harmony, lilyglyphs y lyluatex. El primero otorga la pasibilidad de escribir acordes cifrados y ciertos símbolos musicales; el segundo accede por completo a la tipografía \emph{Emmentaler} y combina glifos de dicha fuente tipográfica; el tercer paquete necesario permite hacer un amplio uso de lilypond para tipografiar fragmentos musicales o partituras completas. Obvio es a esta altura que también es requisito indispensable tener instalado en el sistema GNU/LilyPond. Y por último, a los fines de sumarle a lilypond la capacidad de escribir cifrado funcional ---el creado por Hugo Riemann---, utilizaremos harmonylily, librería de Karsten Reincke.
+
+## Más detalles
+Más detalles en https://github.com/notacontranota/musLuaTeX/blob/master/musluatex.pdf
